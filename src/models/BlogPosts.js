@@ -1,4 +1,4 @@
-// src/models/users.js
+// src/models/BlogPosts.js
 
 module.exports = (sequelize, DataTypes) => {
   const BlogPosts = sequelize.define('blog_posts', {
@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   BlogPosts.associate = (models) => {
     BlogPosts.hasMany(models.Users,
       { foreignKey: 'user_id', as: 'users' });
+  };
+
+  BlogPosts.associate = (models) => {
+    BlogPosts.hasOne(models.PostsCategories,
+      { foreignKey: 'post_id', as: "posts_categories" });
   };
 
   return BlogPosts;
