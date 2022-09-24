@@ -1,7 +1,7 @@
 // src/models/BlogPosts.js
 
 module.exports = (sequelize, DataTypes) => {
-  const BlogPosts = sequelize.define('blog_posts', {
+  const BlogPosts = sequelize.define('BlogPosts', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: DataTypes.STRING,
     content: DataTypes.STRING,

@@ -1,10 +1,14 @@
 const express = require('express');
+const Login = require('./routers/login.router');
+const loginValidation = require('./middlewares/loginValidation');
 
 // ...
 
 const app = express();
 
 app.use(express.json());
+
+app.use('/login', loginValidation, Login);
 
 // ...
 
