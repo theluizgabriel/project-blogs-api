@@ -14,8 +14,17 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
-      user_id: {
-        type: Sequelize.INTEGER
+      userId: {
+        type: Sequelize.INTEGER,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        field: 'user_id',
+        references: {
+          // Informa a tabela da referência da associação
+          model: 'users',
+          // Informa a coluna da referência que é a chave correspondente
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
