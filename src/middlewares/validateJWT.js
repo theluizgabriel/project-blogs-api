@@ -15,7 +15,6 @@ const validateJWT = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secret);
-    console.log(decoded);
 
     const user = await userService.findUserByEmail(decoded.data.email);
 

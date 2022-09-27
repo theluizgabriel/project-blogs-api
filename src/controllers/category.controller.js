@@ -12,7 +12,7 @@ const createCategory = async (req, res) => {
 };
 
 const getAllCategories = async (_req, res) => {
-    const categories = categoryService.getAllCategories();
+    const categories = await categoryService.getAllCategories();
     return res.status(200).json(categories);
 };
 
