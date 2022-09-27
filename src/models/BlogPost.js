@@ -12,17 +12,13 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     timestamps: false,
-    underscored: true
+    underscored: true,
+    tableName: 'blog_posts',
   });
 
   BlogPost.associate = (models) => {
     BlogPost.belongsTo(models.User, { foreignKey: 'user_id', as: 'users' });
   };
-
-  // BlogPost.associate = (models) => {
-  //   BlogPost.hasOne(models.PostsCategories,
-  //     { foreignKey: 'post_id', as: "posts_categories" });
-  // };
 
   return BlogPost;
 };
