@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User, Category } = require('../models');
 const userService = require('./user.service');
 
 const secret = process.env.JWT_SECRET;
@@ -10,10 +10,15 @@ const getAllPosts = async () => {
 };
 
 const getPostById = async (id) => {
-    const post = await BlogPost.findOne({ where: { id } });
-    const user = await userService.getUserById(post.userId);
-    const categories = await PostCategory.findOne({ where: { postId: id } });
-    return (post, { user, categories });
+    const posts = await BlogPost.findOne({
+        where: { id },
+        include: [{ model: User,
+        as: 'users', 
+        attributes: { exclude: ['password'] },
+      },
+         { model: Category, as: 'categories', through: { attributes: [] } }],
+      });
+      return posts;
 };
 
 const insertPostsCategories = async (categoryIds, postId) => {
