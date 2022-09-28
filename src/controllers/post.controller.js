@@ -1,18 +1,15 @@
 const postService = require('../services/post.service');
+const validatePost = require('../validations/validatePost');
 
 const createPost = async (req, res) => {
+    const validate = await validatePost(req.body);
+    if (validate.error) return res.status(400).json({ message: validate.message });
     try {
-    const { title, content, categoryIds } = req.body;
-    const newCategory = await postService
-    .createPost({ 
-        title,
-        content,
-        categoryIds, 
-        published: `${new Date()}`, 
-        updated: `${new Date()}` });
-    return res.status(201).json(newCategory);
+    const token = req.header('Authorization');
+    const newPost = await postService.createPost(req.body, token);
+    return res.status(201).json(newPost);
     } catch (e) {
-        return res.status(500).json({ message: 'ERRO!', error: e.message });
+        return res.status(500).json({ error: 'error', message: e.message });
     }
 };
 
