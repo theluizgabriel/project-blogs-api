@@ -4,6 +4,18 @@ const userService = require('./user.service');
 
 const secret = process.env.JWT_SECRET;
 
+const getAllPosts = async () => {
+    const posts = BlogPost.findAll();
+    return posts;
+};
+
+const getPostById = async (id) => {
+    const post = await BlogPost.findOne({ where: { id } });
+    const user = await userService.getUserById(post.userId);
+    const categories = await PostCategory.findOne({ where: { postId: id } });
+    return (post, { user, categories });
+};
+
 const insertPostsCategories = async (categoryIds, postId) => {
   const categories = categoryIds.map(async (categoryId) => {
     await PostCategory.create({ postId, categoryId });
@@ -29,4 +41,6 @@ const createPost = async (body, token) => {
 module.exports = {
     createPost,
     insertPostsCategories,
+    getAllPosts,
+    getPostById,
 };
