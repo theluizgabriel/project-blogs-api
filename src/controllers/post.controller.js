@@ -4,7 +4,7 @@ const validatePost = require('../validations/validatePost');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await postService.getAllPosts();
-        return res.status(201).json(posts);
+        return res.status(200).json(posts);
         } catch (e) {
             return res.status(500).json({ error: 'error', message: e.message });
         }

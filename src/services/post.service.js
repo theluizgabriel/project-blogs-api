@@ -7,7 +7,7 @@ const secret = process.env.JWT_SECRET;
 const getAllPosts = async () => {
     const posts = await BlogPost.findAll({
         include: [{ model: User,
-        as: 'users', 
+        as: 'user', 
         attributes: { exclude: ['password'] },
       },
          { model: Category, as: 'categories', through: { attributes: [] } }],
@@ -19,7 +19,7 @@ const getPostById = async (id) => {
     const posts = await BlogPost.findOne({
         where: { id },
         include: [{ model: User,
-        as: 'users', 
+        as: 'user', 
         attributes: { exclude: ['password'] },
       },
          { model: Category, as: 'categories', through: { attributes: [] } }],
