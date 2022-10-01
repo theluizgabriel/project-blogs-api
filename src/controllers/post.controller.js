@@ -1,5 +1,6 @@
 const postService = require('../services/post.service');
-const validatePost = require('../validations/validatePost');
+const validatePostCreate = require('../validations/validatePostCreate');
+const validatePutPost = require('../validations/validatePutPost');
 
 const getAllPosts = async (req, res) => {
     try {
@@ -23,7 +24,7 @@ const getPostById = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-    const validate = await validatePost(req.body);
+    const validate = await validatePostCreate(req.body);
     if (validate.error) return res.status(400).json({ message: validate.message });
     try {
     const token = req.header('Authorization');
@@ -34,8 +35,22 @@ const createPost = async (req, res) => {
     }
 };
 
+const putPost = async (req, res) => {
+    const { body, params: { id } } = req;
+    const token = req.header('Authorization');
+    const validate = await validatePutPost(req.body, token, id);
+    if (validate.error) return res.status(validate.error).json({ message: validate.message });
+    try {
+    const newPost = await postService.putPost(body, id);
+    return res.status(200).json(newPost);
+    } catch (e) {
+        return res.status(500).json({ error: 'error', message: e.message });
+    }    
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    putPost,
 };

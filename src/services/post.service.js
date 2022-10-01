@@ -6,7 +6,8 @@ const secret = process.env.JWT_SECRET;
 
 const getAllPosts = async () => {
     const posts = await BlogPost.findAll({
-        include: [{ model: User,
+        include: [{ 
+        model: User,
         as: 'user', 
         attributes: { exclude: ['password'] },
       },
@@ -18,7 +19,8 @@ const getAllPosts = async () => {
 const getPostById = async (id) => {
     const posts = await BlogPost.findOne({
         where: { id },
-        include: [{ model: User,
+        include: [{ 
+        model: User,
         as: 'user', 
         attributes: { exclude: ['password'] },
       },
@@ -46,8 +48,24 @@ const createPost = async (body, token) => {
     return newPost;
 };
 
+const putPost = async (body, id) => {
+    const { title, content } = body;
+    await BlogPost.update(
+        { 
+          title, 
+          content, 
+          updated: new Date(), 
+        }, {
+        where: { id },    
+},
+);
+    const update = getPostById(id);
+    return update;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    putPost,
 };
