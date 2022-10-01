@@ -1,6 +1,7 @@
 const postService = require('../services/post.service');
 const validatePostCreate = require('../validations/validatePostCreate');
 const validatePutPost = require('../validations/validatePutPost');
+const validateDeletePost = require('../validations/validateDeletePost');
 
 const getAllPosts = async (req, res) => {
     try {
@@ -48,9 +49,23 @@ const putPost = async (req, res) => {
     }    
 };
 
+const delPost = async (req, res) => {
+    const { params: { id } } = req;
+    const token = req.header('Authorization');
+    const validate = await validateDeletePost(token, id);
+    if (validate.error) return res.status(validate.error).json({ message: validate.message });
+    try {
+        await postService.delPost(id);
+        return res.status(204).end();
+        } catch (e) {
+            return res.status(500).json({ error: 'error', message: e.message });
+        }
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     putPost,
+    delPost,
 };

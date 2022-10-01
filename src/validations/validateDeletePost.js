@@ -4,13 +4,10 @@ const userService = require('../services/user.service');
 
 const secret = process.env.JWT_SECRET;
 
-const validatePutPost = async (body, token, id) => {
+const validateDeletePost = async (token, id) => {
     const decoded = jwt.verify(token, secret);
-    const { title, content } = body;
-    if (!title || !content) {
-        return { error: 400, message: 'Some required fields are missing' }; 
-    }
     const post = await postService.getPostById(id);
+    if (!post) return { error: 404, message: 'Post does not exist' };
     const user = await userService.findUserByEmail(decoded.data.email);
     if (post.dataValues.userId !== user.dataValues.id) {
         return { error: 401, message: 'Unauthorized user' };
@@ -18,4 +15,4 @@ const validatePutPost = async (body, token, id) => {
     return { error: null, message: '' };
 };
 
-module.exports = validatePutPost;
+module.exports = validateDeletePost;
