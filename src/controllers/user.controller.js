@@ -44,8 +44,21 @@ const getUserById = async (req, res) => {
     }
 };
 
+const delUser = async (req, res) => {
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, secret);
+    const userEmail = await userService.findUserByEmail(decoded.data.email);
+    try {
+    await userService.delUser(userEmail);
+    return res.status(204).end();
+    } catch (e) {
+        return res.status(500).json({ error: 'error', message: e.message });
+    }
+};
+
 module.exports = { 
     createUser,
     getAllUsers,
-    getUserById, 
+    getUserById,
+    delUser,
 };
