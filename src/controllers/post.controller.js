@@ -62,17 +62,16 @@ const delPost = async (req, res) => {
         }
 };
 
-// const getPostByQuery = async (req, res) => {
-//     const { q } = req.query;
-//     const validate = await validateDeletePost(token, id);
-//     if (validate.error) return res.status(validate.error).json({ message: validate.message });
-//     try {
-//         await postService.delPost(id);
-//         return res.status(204).end();
-//         } catch (e) {
-//             return res.status(500).json({ error: 'error', message: e.message });
-//         }
-// };
+const getPostByQuery = async (req, res) => {
+    const { q } = req.query;
+    try {
+    const posts = await postService.getPostsByQuery(q);
+    if (!posts) return res.status(200).json([]);
+    return res.status(200).json(posts);
+    } catch (e) {
+        return res.status(500).json({ error: 'error', message: e.message });
+    }
+};
 
 module.exports = {
     createPost,
@@ -80,4 +79,5 @@ module.exports = {
     getPostById,
     putPost,
     delPost,
+    getPostByQuery,
 };
