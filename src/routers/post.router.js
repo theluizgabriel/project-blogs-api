@@ -4,11 +4,11 @@ const validateJWT = require('../middlewares/validateJWT');
 
 const router = express.Router();
 
+router.get('/search', validateJWT, postController.getPostsByQuery);
 router.delete('/:id', validateJWT, postController.delPost);
 router.put('/:id', validateJWT, postController.putPost);
 router.get('/:id', validateJWT, postController.getPostById);
 router.get('/', validateJWT, postController.getAllPosts);
-router.get('/search', validateJWT, postController.getPostByQuery);
 router.post('/', validateJWT, postController.createPost);
 
 module.exports = router;

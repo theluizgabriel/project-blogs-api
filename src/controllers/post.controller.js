@@ -62,9 +62,9 @@ const delPost = async (req, res) => {
         }
 };
 
-const getPostByQuery = async (req, res) => {
-    const { q } = req.query;
+const getPostsByQuery = async (req, res) => {
     try {
+    const { q } = req.query;
     const posts = await postService.getPostsByQuery(q);
     if (!posts) return res.status(200).json([]);
     return res.status(200).json(posts);
@@ -79,5 +79,5 @@ module.exports = {
     getPostById,
     putPost,
     delPost,
-    getPostByQuery,
+    getPostsByQuery,
 };
